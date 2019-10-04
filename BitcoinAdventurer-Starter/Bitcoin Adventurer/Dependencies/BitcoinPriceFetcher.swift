@@ -1,15 +1,15 @@
-/// Copyright (c) 2018 Razeware LLC
-///
+/// Copyright (c) 2019 Razeware LLC
+/// 
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
 /// in the Software without restriction, including without limitation the rights
 /// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 /// copies of the Software, and to permit persons to whom the Software is
 /// furnished to do so, subject to the following conditions:
-///
+/// 
 /// The above copyright notice and this permission notice shall be included in
 /// all copies or substantial portions of the Software.
-///
+/// 
 /// Notwithstanding the foregoing, you may not use, copy, modify, merge, publish,
 /// distribute, sublicense, create a derivative work, and/or sell copies of the
 /// Software in any work that is designed, intended, or marketed for pedagogical or
@@ -17,7 +17,7 @@
 /// or information technology.  Permission for such use, copying, modification,
 /// merger, publication, distribution, sublicensing, creation of derivative works,
 /// or sale is expressly withheld.
-///
+/// 
 /// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 /// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 /// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -26,56 +26,45 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 /// THE SOFTWARE.
 
-import UIKit
+import Foundation
 
-internal class BitcoinViewController: UIViewController {
-  
-  @IBOutlet weak private var checkAgain: UIButton!
-  @IBOutlet weak private var primary: UILabel!
-  @IBOutlet weak private var partial: UILabel!
-  
-  let fetcher = BitcoinPriceFetcher(networking: HTTPNetworking())
-  
-  private let dollarsDisplayFormatter: NumberFormatter = {
-    let formatter = NumberFormatter()
-    formatter.maximumFractionDigits = 0
-    formatter.numberStyle = .currency
-    formatter.currencySymbol = ""
-    formatter.currencyGroupingSeparator = ","
-    return formatter
-  }()
-  
-  private let standardFormatter = NumberFormatter()
-  
-  // MARK: - View lifecycle
-  override func viewDidLoad() {
-    super.viewDidLoad()
-    requestPrice()
+protocol PriceFetcher {
+  func fetch(response: @escaping (PriceResponse?) -> Void)
+}
+
+struct BitcoinPriceFetcher: PriceFetcher {
+  let networking: Networking
+
+  // 1. Initialize the fetcher with a networking object
+  init(networking: Networking) {
+    self.networking = networking
   }
 
-  // MARK: - Actions
-  @IBAction private func checkAgainTapped(sender: UIButton) {
-    requestPrice()
-  }
-  
-  // MARK: - Private methods
-  private func updateLabel(price: Price) {
-    guard let dollars = price.components().dollars,
-          let cents = price.components().cents,
-          let dollarAmount = standardFormatter.number(from: dollars) else { return }
-    
-    primary.text = dollarsDisplayFormatter.string(from: dollarAmount)
-    partial.text = ".\(cents)"
-  }
-  
-  private func requestPrice()  {
-    fetcher.fetch { response in
-      guard let response = response else { return }
-      
-      DispatchQueue.main.async { [weak self] in
-        self?.updateLabel(price: response.data)
+  // 2. Fetch data, returning a PriceResponse object if successful
+  func fetch(response: @escaping (PriceResponse?) -> Void) {
+    networking.request(from: Coinbase.bitcoin) { data, error in
+      // Log errors if we receive any, and abort.
+      if let error = error {
+        print("Error received requesting Bitcoin price: \(error.localizedDescription)")
+        response(nil)
       }
+
+      // Parse data into a model object.
+      let decoded = self.decodeJSON(type: PriceResponse.self, from: data)
+      if let decoded = decoded {
+        print("Price returned: \(decoded.data.amount)")
+      }
+      response(decoded)
     }
   }
-  
+
+  // 3. Decode JSON into an object of type 'T'
+  private func decodeJSON<T: Decodable>(type: T.Type, from: Data?) -> T? {
+    let decoder = JSONDecoder()
+    guard let data = from,
+          let response = try? decoder.decode(type.self, from: data) else { return nil }
+
+    return response
+  }
 }
+
