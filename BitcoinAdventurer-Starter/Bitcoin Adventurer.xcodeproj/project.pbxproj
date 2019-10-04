@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2C5077AAAC85C7831FA8CD15 /* Pods_Bitcoin_Adventurer_Bitcoin_Adventurer_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBDAD690153818F33CB3A344 /* Pods_Bitcoin_Adventurer_Bitcoin_Adventurer_Tests.framework */; };
+		2DB9EE482331959C0064EC7F /* HTTPNetworking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DB9EE472331959C0064EC7F /* HTTPNetworking.swift */; };
 		733E0F188EDF2FED6CFE3240 /* Pods_Bitcoin_Adventurer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 063BB4E3376AFF7E31281C9C /* Pods_Bitcoin_Adventurer.framework */; };
 		8714602E1FF2FB41001F9EB5 /* Endpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8714602D1FF2FB41001F9EB5 /* Endpoint.swift */; };
 		8738EDC11FE59A31000CBC22 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8738EDC01FE59A31000CBC22 /* AppDelegate.swift */; };
@@ -38,6 +39,7 @@
 /* Begin PBXFileReference section */
 		063BB4E3376AFF7E31281C9C /* Pods_Bitcoin_Adventurer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Bitcoin_Adventurer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0E41ABE2A875AB9A7AADA440 /* Pods-Bitcoin Adventurer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Bitcoin Adventurer.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Bitcoin Adventurer/Pods-Bitcoin Adventurer.debug.xcconfig"; sourceTree = "<group>"; };
+		2DB9EE472331959C0064EC7F /* HTTPNetworking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPNetworking.swift; sourceTree = "<group>"; };
 		8714602D1FF2FB41001F9EB5 /* Endpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Endpoint.swift; path = Model/Endpoint.swift; sourceTree = "<group>"; };
 		8738EDBD1FE59A31000CBC22 /* Bitcoin Adventurer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Bitcoin Adventurer.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8738EDC01FE59A31000CBC22 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -93,6 +95,14 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		2DB9EE46233195390064EC7F /* Dependencies */ = {
+			isa = PBXGroup;
+			children = (
+				2DB9EE472331959C0064EC7F /* HTTPNetworking.swift */,
+			);
+			path = Dependencies;
+			sourceTree = "<group>";
+		};
 		8738EDB41FE59A31000CBC22 = {
 			isa = PBXGroup;
 			children = (
@@ -118,6 +128,7 @@
 		8738EDBF1FE59A31000CBC22 /* Bitcoin Adventurer */ = {
 			isa = PBXGroup;
 			children = (
+				2DB9EE46233195390064EC7F /* Dependencies */,
 				8738EDC01FE59A31000CBC22 /* AppDelegate.swift */,
 				8738EDCC1FE59A31000CBC22 /* Info.plist */,
 				87CED55C1FE7540300C4D66E /* Storyboard */,
@@ -390,6 +401,7 @@
 				8738EDC31FE59A31000CBC22 /* BitcoinViewController.swift in Sources */,
 				8738EDC11FE59A31000CBC22 /* AppDelegate.swift in Sources */,
 				87CED5631FE7550B00C4D66E /* Error.swift in Sources */,
+				2DB9EE482331959C0064EC7F /* HTTPNetworking.swift in Sources */,
 				8714602E1FF2FB41001F9EB5 /* Endpoint.swift in Sources */,
 				87CED55F1FE754A900C4D66E /* Price.swift in Sources */,
 			);
