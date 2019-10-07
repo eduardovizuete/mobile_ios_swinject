@@ -1,2 +1,4 @@
 # mobile_ios_swinject
-Mobile ios swinject tutorial
+Swinject Tutorial for iOS: Getting Started
+  - https://www.raywenderlich.com/17-swinject-tutorial-for-ios-getting-started
+  
