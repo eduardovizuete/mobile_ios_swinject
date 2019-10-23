@@ -127,7 +127,7 @@ extension ViewController {
           mimeType: "image/jpeg")
       },
       to: "https://api.imagga.com/v2/uploads",
-      headers: ["Authorization": "Basic yxz"],
+      headers: ["Authorization": "Basic xyz"],
       encodingCompletion: { encodingResult in
         switch encodingResult {
           case .success(let upload, _, _):
@@ -147,12 +147,40 @@ extension ViewController {
               let firstFileID = JSON(value)["result"]["upload_id"].stringValue
               print("Content uploaded with ID: \(firstFileID)")
               // 3
-              completion(nil, nil)
+              //completion(nil, nil)
+              self.downloadTags(contentID: firstFileID) { tags in
+                completion(tags, nil)
+              }
             }
           case .failure(let encodingError):
             print(encodingError)
         }
     })
   }
+  
+  func downloadTags(contentID: String, completion: @escaping ([String]?) -> Void) {
+    // 1
+    Alamofire.request("https://api.imagga.com/v2/tags",
+                      parameters: ["image_upload_id": contentID],
+                      headers: ["Authorization": "Basic xyz"])
+       // 2
+      .responseJSON { response in
+        guard response.result.isSuccess,
+          let value = response.result.value else {
+            print("Error while fetching tags: \(String(describing: response.result.error))")
+            completion(nil)
+            return
+        }
+        
+        // 3
+        let tags = JSON(value)["result"]["tags"].array?.map { json in
+          json["tag"]["en"].stringValue
+        }
+          
+        // 4
+        completion(tags)
+    }
+  }
+
   
 }
