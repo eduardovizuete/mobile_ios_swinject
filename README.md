@@ -1,5 +1,4 @@
-# mobile_ios_swinject -> branch: swinject
-Swinject Tutorial for iOS: Getting Started
+# Swinject Tutorial for iOS: Getting Started -> branch: swinject
   - https://www.raywenderlich.com/17-swinject-tutorial-for-ios-getting-started
   
 # Alamofire Tutorial: Getting Started -> branch: alamofire
