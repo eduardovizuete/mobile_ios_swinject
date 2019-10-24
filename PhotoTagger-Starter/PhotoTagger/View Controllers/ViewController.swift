@@ -126,8 +126,7 @@ extension ViewController {
           fileName: "image.jpg",
           mimeType: "image/jpeg")
       },
-      to: "https://api.imagga.com/v2/uploads",
-      headers: ["Authorization": "Basic xyz"],
+      with: ImaggaRouter.uploads,
       encodingCompletion: { encodingResult in
         switch encodingResult {
           case .success(let upload, _, _):
@@ -161,9 +160,7 @@ extension ViewController {
   
   func downloadTags(contentID: String, completion: @escaping ([String]?) -> Void) {
     // 1
-    Alamofire.request("https://api.imagga.com/v2/tags",
-                      parameters: ["image_upload_id": contentID],
-                      headers: ["Authorization": "Basic xyz"])
+    Alamofire.request(ImaggaRouter.tags(contentID))
        // 2
       .responseJSON { response in
         guard response.result.isSuccess,
@@ -185,9 +182,7 @@ extension ViewController {
   
   func downloadColors(contentID: String, completion: @escaping ([PhotoColor]?) -> Void) {
     // 1.
-    Alamofire.request("https://api.imagga.com/v2/colors",
-                      parameters: ["image_upload_id": contentID],
-                      headers: ["Authorization": "Basic xyz"])
+    Alamofire.request(ImaggaRouter.colors(contentID))
       .responseJSON { response in
         // 2
         guard response.result.isSuccess,
